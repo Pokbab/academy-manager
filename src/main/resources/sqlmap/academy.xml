@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="academy">
+    <typeAlias alias="Academy" type="com.nhncorp.mgr.vo.Academy"/>
+
+    <resultMap class="Academy" id="academyResultMap">
+        <result column="code" property="code"/>
+        <result column="academy_name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+    </resultMap>
+
+    <select id="selectAcademyList" resultMap="academyResultMap">
+        SELECT * 
+        FROM academy 
+        ORDER BY code DESC 
+    </select>
+    
+    <select id="selectAcademyByCode" resultMap="academyResultMap">
+        SELECT * 
+        FROM academy 
+        WHERE code = #code#
+    </select>
+    
+    <insert id="insertAcademy" parameterClass="Academy">
+        INSERT
+        INTO academy (academy_name, phone, address)
+        VALUES (#name#, #phone#, #address#)
+    </insert>
+    
+    <update id="updateAcademy" parameterClass="Academy">
+        UPDATE academy
+        SET academy_name = #name#, phone = #phone#, address = #address# 
+        WHERE code = #code#
+    </update>
+    
+    <delete id="deleteAcademy">
+        DELETE FROM academy
+        WHERE code = #code#
+    </delete>
+</sqlMap>

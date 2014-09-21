@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="course">
+    <typeAlias alias="Course" type="com.nhncorp.mgr.vo.Course"/>
+    
+    <resultMap class="Course" id="courseResultMap" >
+        <result column="code" property="code"/>
+        <result column="course_name" property="name"/>
+        <result column="user_num" property="userNum"/>
+        <result column="academy_code" property="academy.code"/>
+        <result column="academy_name" property="academy.name"/>
+        <result column="phone" property="academy.phone"/>
+        <result column="address" property="academy.address"/>
+    </resultMap>
+
+    <select id="selectCourseList" resultMap="courseResultMap">
+        SELECT c.code, c.course_name, c.user_num, c.academy_code, a.academy_name, a.phone, a.address  
+        FROM course c 
+        JOIN academy a 
+        ON c.academy_code = a.code 
+        ORDER BY code DESC
+    </select>
+    
+    <select id="selectCourseByCode" resultMap="courseResultMap">
+        SELECT c.code, c.course_name, c.user_num, c.academy_code, a.academy_name, a.phone, a.address  
+        FROM course c 
+        JOIN academy a 
+        ON c.academy_code = a.code 
+        WHERE c.code = #code#
+    </select>
+
+    <parameterMap class="Course" id="insertCourseParamMap">
+        <parameter property="name" jdbcType="VARCHAR"/>
+        <parameter property="academy.code" jdbcType="VARCHAR"/>
+    </parameterMap>
+    
+    <insert id="insertCourse" parameterMap="insertCourseParamMap">
+        INSERT
+        INTO course (course_name, academy_code)
+        VALUES (?, ?)
+    </insert>
+    
+    <parameterMap class="Course" id="updateCourseParamMap">
+        <parameter property="name" jdbcType="VARCHAR"/>
+        <parameter property="academy.code" jdbcType="VARCHAR"/>
+        <parameter property="code" jdbcType="VARCHAR"/>
+    </parameterMap>
+    
+    <update id="updateCourse" parameterMap="updateCourseParamMap">
+        UPDATE course
+        SET course_name = ?, academy_code = ? 
+        WHERE code = ?
+    </update>
+    
+    <update id="increaseUserNum">
+        UPDATE course 
+        SET user_num = user_num + 1 
+        WHERE code = #code#;
+    </update>
+    
+    <update id="decreaseUserNum">
+        UPDATE course 
+        SET user_num = user_num - 1 
+        WHERE code = #code#;
+    </update>
+    
+    <delete id="deleteCourse">
+        DELETE FROM course
+        WHERE code = #code#
+    </delete>
+</sqlMap>

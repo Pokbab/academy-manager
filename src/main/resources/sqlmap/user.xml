@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="user">
+    <typeAlias alias="User" type="com.nhncorp.mgr.vo.User"/>
+    
+    <resultMap class="User" id="userResultMap">
+        <result column="id" property="id"/>
+        <result column="password" property="password"/>
+        <result column="user_name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="phone" property="phone"/>
+        <result column="user_type" property="type"/>
+    </resultMap>
+
+    <select id="selectUserList" resultMap="userResultMap">
+        SELECT * 
+        FROM user 
+        ORDER BY id DESC 
+    </select>
+    
+    <select id="selectUserById" resultMap="userResultMap">
+        SELECT * 
+        FROM user 
+        WHERE id = #id#
+    </select>
+    
+    <insert id="insertUser" parameterClass="User">
+        INSERT
+        INTO user (id, password, user_name, age, phone, user_type)
+        VALUES (#id#, #password#, #name#, #age#, #phone#, #type#)
+    </insert>
+    
+    <update id="updateUser" parameterClass="User">
+        UPDATE user
+        SET password = #password#, user_name = #name#, age = #age#, phone = #phone#, user_type = #type# 
+        WHERE id = #id#
+    </update>
+    
+    <delete id="deleteUser">
+        DELETE FROM user
+        WHERE id = #id#
+    </delete>
+</sqlMap>

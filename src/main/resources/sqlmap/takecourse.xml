@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com/DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="takeCourse">
+    <typeAlias alias="TakeCourse" type="com.nhncorp.mgr.vo.TakeCourse"/>
+
+    <resultMap class="TakeCourse" id="takeCourseResultMap">
+        <result column="code" property="code"/>
+        <result column="user_id" property="user.id"/>
+        <result column="course_code" property="course.code"/>
+    </resultMap>
+    
+    <select id="selectTakeCourseById" resultMap="takeCourseResultMap">
+        SELECT t.code, t.user_id, t.course_code 
+        FROM takecourse t, user u
+        WHERE u.id = #id# AND t.user_id = u.id
+    </select>
+
+    <insert id="insertTakeCourse" parameterClass="TakeCourse">
+        INSERT
+        INTO takecourse (user_id, course_code)
+        VALUES (#user.id#, #course.code#)
+    </insert>
+    
+    <delete id="deleteTakeCourse">
+        DELETE FROM takecourse 
+        WHERE code = #code#
+    </delete>
+    
+    <delete id="deleteTakeCourseByCourseCode">
+        DELETE FROM takecourse 
+        WHERE course_code = #code#
+    </delete>
+</sqlMap>
